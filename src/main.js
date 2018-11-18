@@ -3,6 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import ToHeader from './components/ToHeader/ToHeader.vue'
+
+Vue.component('ToHeader',ToHeader)
 
 /* eslint-disable no-new */
 new Vue({
