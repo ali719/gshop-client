@@ -1,7 +1,7 @@
 <template>
   <section class="profile">
     <ToHeader title="我的"/>
-    <section class="profile-number">
+    <section class="profile-number" @click="$router.push('/login')">
       <a href="javascript:" class="profile-link">
         <div class="profile_image">
           <i class="iconfont icon-person"></i>
@@ -98,7 +98,7 @@
   }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/mixins.styl"
 
   .profile //我的
