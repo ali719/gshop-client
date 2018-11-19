@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './state'
 import ToHeader from './components/ToHeader/ToHeader.vue'
 
 Vue.component('ToHeader',ToHeader)
@@ -13,5 +14,6 @@ new Vue({
   components: { App },
   template: '<App/>',
   render:h => h(App),
-  router
+  router,
+  store
 })

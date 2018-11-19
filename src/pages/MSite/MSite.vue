@@ -2,7 +2,7 @@
   <!--首页外卖-->
   <section class="msite">
     <!--首页头部-->
-    <ToHeader title="昌平区北七家宏福科技园(337省道北)">
+    <ToHeader :title="address.name">
       <span class="header_search" slot="left">
         <i class="iconfont icon-sousuo"></i>
       </span>
@@ -132,13 +132,22 @@
 </template>
 
 <script>
-import ShopList from '../../components/ShopList/ShopList.vue'
+  import {mapState} from 'vuex'
+  import ShopList from '../../components/ShopList/ShopList.vue'
 
-export default {
-  components:{
-    ShopList
+  export default {
+    mounted(){
+      //获取视频列表和商家信息
+      this.$store.dispatch('getFoodCategorys')
+      this.$store.dispatch('getShops')
+    },
+    components:{
+      ShopList
+    },
+    computed:{
+      ...mapState(['address'])
+    }
   }
-}
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
