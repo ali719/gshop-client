@@ -12,6 +12,7 @@
 export default {
      mounted(){
       this.$store.dispatch('getAddress')
+       this.$store.dispatch('getUserInfo')
     },
 
     components:{
