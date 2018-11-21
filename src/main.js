@@ -2,12 +2,20 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import {Button} from 'mint-ui'
+import router from './router'
+import store from './state'
+import ToHeader from './components/ToHeader/ToHeader.vue'
 
-Vue.config.productionTip = false
+Vue.component('ToHeader',ToHeader)
+Vue.component(Button.name,Button)
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  render:h => h(App),
+  router,
+  store
 })
