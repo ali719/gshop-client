@@ -10,6 +10,7 @@ import ToHeader from './components/ToHeader/ToHeader.vue'
 Vue.component('ToHeader',ToHeader)
 Vue.component(Button.name,Button)
 
+import './mock/mockServer'
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
