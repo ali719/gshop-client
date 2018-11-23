@@ -2,8 +2,11 @@
   <div>
     <div class="goods">
       <div class="menu-wrapper">
-        <ul>
-          <li class="menu-item current" v-for="(good,index) in goods" :key="index">
+        <ul ref="leftUl">
+          <li class="menu-item " v-for="(good,index) in goods"
+              :key="index" :class="{current : index === currentIndex}"
+              @click="clickItem(index)"
+          >
             <span class="text bottom-border-1px">
               <img class="icon" :src="good.icon" v-if="good.icon">
               {{good.name}}
@@ -13,7 +16,7 @@
         </ul>
       </div>
       <div class="foods-wrapper">
-        <ul>
+        <ul ref="RightUl">
           <li class="food-list-hook" v-for="(good,index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
             <ul>
@@ -49,22 +52,70 @@
   import {mapState} from 'vuex'
 
   export default {
+    data(){
+      return{
+        scrollY:0,//滑动的Y轴的距离
+        tops:[] //各个分类的top值
+      }
+    },
     mounted(){
       this.$store.dispatch('getShopGoods')
-      this._initScroll()
+      setTimeout(() =>{
+        this._initScroll()
+        this._initTop()
+      },100)
 
     },
     computed:{
-      ...mapState(['goods'])
+      ...mapState(['goods']),
+      //当前分类下标
+      currentIndex(){
+        const {scrollY,tops} = this
+        // 计算出最新的下标
+        const index = tops.findIndex((top,index) => {
+          return scrollY >= top && scrollY < tops[index+1]
+        })
+        // 如果下标变化了
+        if(this.index != index && this.leftScroll){
+          this.index = index
+          const li = this.$refs.leftUl.children[index]
+          this.leftScroll.scrollToElement(li,500)
+        }
+        return index
+      }
     },
     methods:{
       _initScroll(){
-        new BScroll('.menu-wrapper',{
+        this.leftScroll = new BScroll('.menu-wrapper',{
 
         })
-        new BScroll('.foods-wrapper',{
-
+        this.rightScroll = new BScroll('.foods-wrapper',{
+          probeType:1,  // 非实时(每隔一定时间才分发), 只有触摸时才分发
+          click:true
         })
+        this.rightScroll.on('scroll',({x,y})=>{
+          console.log('scroll',x,y)
+          this.scrollY = Math.abs(y)
+        })
+        this.rightScroll.on('scrollEnd',({x,y})=>{
+          this.scrollY = Math.abs(y)
+        })
+      },
+      _initTop(){
+        const tops = []
+        let top = 0
+        tops.push(top)
+        const lis = this.$refs.RightUl.getElementsByClassName('food-list-hook')
+        Array.prototype.slice.call(lis).forEach(li =>{
+          top += li.clientHeight
+          tops.push(top)
+        })
+        this.tops = tops
+      },
+      clickItem(index){
+        const y = -this.tops[index]
+        this.scrollY = -y
+        this.rightScroll.scrollTo(0,y,500)
       }
     }
   }
