@@ -35,7 +35,7 @@
                     <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
-                    CartControl组件
+                    <CartControl :food="food"/>
                   </div>
                 </div>
               </li>
@@ -43,6 +43,7 @@
           </li>
         </ul>
       </div>
+      <ShopCart/>
     </div>
   </div>
 </template>
@@ -50,6 +51,8 @@
 <script>
   import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
+  import CartControl from '../../../components/CartControl/CartControl.vue'
+  import ShopCart from '../../../components/ShopCart/ShopCart.vue'
 
   export default {
     data(){
@@ -57,6 +60,10 @@
         scrollY:0,//滑动的Y轴的距离
         tops:[] //各个分类的top值
       }
+    },
+    components:{
+      CartControl,
+      ShopCart
     },
     mounted(){
       this.$store.dispatch('getShopGoods')
